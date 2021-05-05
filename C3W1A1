@@ -1,0 +1,31 @@
+
+CREATE TABLE docs01 (id SERIAL, doc TEXT, PRIMARY KEY(id));
+
+DROP TABLE invert01 CASCADE;
+CREATE TABLE invert01 (
+  keyword TEXT,
+  doc_id INTEGER REFERENCES docs01(id) ON DELETE CASCADE
+);
+
+INSERT INTO docs01 (doc) VALUES
+('prompt It would have probably taken you quite a while to guess that'),
+('one so having a book handy probably will turn out to be helpful'),
+('Terminology Interpreter and compiler'),
+('Python is a highlevel language intended to be'),
+('relatively straightforward for humans to read and write and for'),
+('computers to read and process Other highlevel languages include Java'),
+('C PHP Ruby Basic Perl JavaScript and many more The actual'),
+('hardware inside the Central Processing Unit CPU does not understand'),
+('any of these highlevel languages'),
+('The CPU understands a language we call machine');
+
+-- Discard duplicate rows
+SELECT DISTINCT id, s.keyword AS keyword
+FROM docs01, unnest(string_to_array(lower(docs01.doc), ' ')) s(keyword)
+ORDER BY id;
+
+INSERT INTO invert01 (doc_id, keyword)
+SELECT DISTINCT id, s.keyword AS keyword
+FROM docs01, unnest(string_to_array(lower(docs01.doc), ' ')) s(keyword)
+ORDER BY id;
+
