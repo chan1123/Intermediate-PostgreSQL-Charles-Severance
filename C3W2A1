@@ -1,5 +1,9 @@
-DROP TABLE
+DROP TABLE docs03;
+
 CREATE TABLE docs03 (id SERIAL, doc TEXT, PRIMARY KEY(id));
+
+CREATE INDEX array03 ON docs03 USING gin(string_to_array(lower(doc), ' ') array_ops);
+
 INSERT INTO docs03 (doc) VALUES
 ('prompt It would have probably taken you quite a while to guess that'),
 ('one so having a book handy probably will turn out to be helpful'),
@@ -12,5 +16,9 @@ INSERT INTO docs03 (doc) VALUES
 ('any of these highlevel languages'),
 ('The CPU understands a language we call machine');
 
+INSERT INTO docs03 (doc) SELECT 'Neon ' || generate_series(10000,20000);
 
-CREATE INDEX array03 ON docs03 USING gin(...);
+SELECT id, doc FROM docs03 WHERE '{straightforward}' <@ string_to_array(lower(doc), ' ');
+EXPLAIN SELECT id, doc FROM docs03 WHERE '{straightforward}' <@ string_to_array(lower(doc), ' ');
+
+
