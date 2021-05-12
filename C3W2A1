@@ -1,0 +1,16 @@
+DROP TABLE
+CREATE TABLE docs03 (id SERIAL, doc TEXT, PRIMARY KEY(id));
+INSERT INTO docs03 (doc) VALUES
+('prompt It would have probably taken you quite a while to guess that'),
+('one so having a book handy probably will turn out to be helpful'),
+('Terminology Interpreter and compiler'),
+('Python is a highlevel language intended to be'),
+('relatively straightforward for humans to read and write and for'),
+('computers to read and process Other highlevel languages include Java'),
+('C PHP Ruby Basic Perl JavaScript and many more The actual'),
+('hardware inside the Central Processing Unit CPU does not understand'),
+('any of these highlevel languages'),
+('The CPU understands a language we call machine');
+
+
+CREATE INDEX array03 ON docs03 USING gin(...);
