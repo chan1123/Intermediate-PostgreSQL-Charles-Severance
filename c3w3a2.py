@@ -41,10 +41,11 @@ conn.commit()    # Flush it all to the DB server
 value = 119488
 for i in range(300) :
     print(i+1, value)
-    value = int((value * 22) / 7) % 1000000
+    
 
     sql = 'INSERT INTO pythonseq (iter, val) VALUES (%s, %s)'
-    cur.execute(sql, (i, value))
+    cur.execute(sql, (i+1, value))
+    value = int((value * 22) / 7) % 1000000
 
 conn.commit()
 
