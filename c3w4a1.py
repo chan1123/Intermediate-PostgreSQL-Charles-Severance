@@ -1,7 +1,6 @@
 import psycopg2
 import hidden
 import time
-import myutils
 import requests
 import json
 
