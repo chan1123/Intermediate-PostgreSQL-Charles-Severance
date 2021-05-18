@@ -16,6 +16,10 @@ conn = psycopg2.connect(host=secrets['host'],
 
 cur = conn.cursor()
 
+sql = 'DROP TABLE IF EXISTS pokeapi CASCADE;'
+print(sql)
+cur.execute(sql)
+
 sql = '''
 CREATE TABLE IF NOT EXISTS pokeapi
 (id INTEGER, body JSONB);
@@ -31,8 +35,10 @@ for i in range(1,amount):
     response = requests.get(url)
     text = response.text
     print(i)
-    sql = 'UPDATE pokeapi SET id=%s, body=%s;'
-    row = cur.execute(sql, (i, text))
+
+    sql = 'INSERT INTO pokeapi (id, body) VALUES (%s, %s)'
+    cur.execute(sql, (i, text))
+    
 #     print(text)
 
     time.sleep(2)
